@@ -1,0 +1,50 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hevodata.android">
+
+    <!--
+      This permission is required to allow the application to send events and properties to Hevo.
+     -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--
+      This permission is optional but recommended so we can be smart about when to send data.
+     -->
+    <!--
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    -->
+
+    <!--
+      This permission is optional but recommended so events will contain information about bluetooth state
+    -->
+    <!--
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    -->
+
+    <application>
+
+        <!-- Set this option to true if you wish for in-app notifications to be displayed without
+             being tracked by Hevo. This is useful for testing the integration with your Android app.
+             The default value is false. -->
+        <!--
+        <meta-data android:name="com.hevodata.android.TestMode"
+            android:value="true" />
+        -->
+
+        <!-- Set the following option to true if you wish to see the debug output from the Hevo Android
+             library. This may be useful in determining when track calls go out or in-app notifications
+             are fetched. The default value is false. -->
+        <!--
+        <meta-data android:name="com.hevodata.android.EnableDebugLogging"
+            android:value="true" />
+        -->
+
+        <!-- This receiver will allow your application to record referrer parameters as super properties automatically -->
+        <!--
+        <receiver android:name="com.hevodata.android.InstallReferrerReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        -->
+    </application>
+</manifest>

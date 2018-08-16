@@ -1,0 +1,85 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+ext {
+    bintrayRepo = 'android'
+    bintrayName = 'android'
+
+    publishedGroupId = 'com.hevodata'
+    libraryName = 'android'
+    artifact = 'android'
+
+    libraryDescription = 'Official Android tracking library for Hevo Analytics'
+
+    siteUrl = 'https://hevodata.com/'
+    gitUrl = 'https://github.com/hevoio/android.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'hevo'
+    developerName = 'Hevo Dev'
+    developerEmail = 'dev@hevodata.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+group = GROUP
+version = VERSION_NAME
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '26.0.1'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 23
+        testApplicationId "test.com.hevodata.android"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        consumerProguardFiles 'proguard.txt'
+
+        buildConfigField "String", "HEVO_VERSION", "\"${version}\""
+
+        lintOptions {
+            abortOnError true
+            warningsAsErrors false
+            disable "UnusedResources"
+            textOutput "stdout"
+            textReport true
+        }
+    }
+}
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14.1'
+}
+
+//apply from: rootProject.file('maven.gradle')
+apply from: rootProject.file('installv1.gradle')
+apply from: rootProject.file('bintrayv1.gradle')

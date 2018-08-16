@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<!--
+  To get your application working with Hevo (particularly for push notifications),
+  you will need to make some changes to your application manifest file.
+
+  You can use this file as a model for the sorts of changes required. Be aware that
+  you will need to replace "com.hevodata.example.hello" with your application package
+  name in several places before your application will work.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hevodata.example.hello"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="23" />
+
+    <!--
+      This permission is required to allow the application to send events and properties to Hevo.
+     -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--
+      This permission is optional but recommended so we can be smart about when to send data.
+     -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!--
+      This permission is optional but recommended so events will contain information about bluetooth state
+    -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <!--
+      These permissions are required to allow the application to receive and display
+      Google Cloud Messaging notifications from Hevo.
+     -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!--
+      This custom permission is also required for Google Cloud Messaging. In your
+      own applications, you will need to be sure that the permission name is
+
+           ${application_package}.C2D_MESSAGE
+
+      Where ${application_package} is the package name declared in your <manifest> element.
+     -->
+    <permission android:name="com.hevodata.example.hello.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="com.hevodata.example.hello.permission.C2D_MESSAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+        <!-- The Hevo library will automatically attempt to show available in
+             app notifications every time a new Activity is displayed. To disable this behavior,
+             add the following line. The default value for this option is set to true. -->
+        <meta-data android:name="com.hevodata.android.HevoConfig.AutoShowHevoUpdates"
+               android:value="false" />
+
+        <!-- If you wish to test receiving notifications multiple times, the following option
+             will prevent tracking that a notification has been displayed to Hevo.
+             This will allow you to tweak your in app notifications without having to create
+             a new one each time. -->
+        <meta-data android:name="com.hevodata.android.HevoConfig.TestMode"
+            android:value="true" />
+
+        <!-- This will enable various debugging messages that shows communication between the Hevo
+             Android library and the Hevo API servers, which are useful for seeing when track requests
+             go out and when notifications are received. -->
+        <meta-data android:name="com.hevodata.android.HevoConfig.EnableDebugLogging"
+            android:value="true" />
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- This receiver will allow your application to record referrer parameters as super properties automatically -->
+        <receiver android:name="com.hevodata.android.InstallReferrerReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+</manifest>
