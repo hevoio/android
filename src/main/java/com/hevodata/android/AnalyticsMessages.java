@@ -296,10 +296,10 @@ class AnalyticsMessages {
                     return;
                 }
 
-                if (mConfig.getIntegrationToken() == null || mConfig.getEventsEndpoint() == null) {
+                if (mConfig.getEventsEndpoint() == null) {
                     return;
                 }
-                String finalUrl = mConfig.getEventsEndpoint() + mConfig.getIntegrationToken();
+                String finalUrl = mConfig.getEventsEndpoint();
 
                 sendData(dbAdapter, finalUrl);
             }

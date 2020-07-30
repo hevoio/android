@@ -44,9 +44,6 @@ import javax.net.ssl.SSLSocketFactory;
  *     <dt>com.hevodata.android.DisableAppOpenEvent</dt>
  *     <dd>A boolean value. If true, do not send an "$app_open" event when the HevoAPI object is created for the first time. Defaults to true - the $app_open event will not be sent by default.</dd>
  *
- *     <dt>com.hevodata.android.IntegrationToken</dt>
- *     <dd>A string value. If set it will be used to call api calls, if no data will be synced.</dd>
- *
  *     <dt>com.hevodata.android.CaptureAutomaticEvents</dt>
  *     <dd>A boolean value. If not set automatic events will not be replicated.</dd>
  *
@@ -164,7 +161,6 @@ public class HevoConfig {
         mMinSessionDuration = metaData.getInt("com.hevodata.android.MinimumSessionDuration", 10 * 1000); // 10 seconds
         mSessionTimeoutDuration = metaData.getInt("com.hevodata.android.SessionTimeoutDuration", Integer.MAX_VALUE); // no timeout by default
         mTestMode = metaData.getBoolean("com.hevodata.android.TestMode", false);
-        mIntegrationToken = metaData.getString("com.hevodata.android.IntegrationToken");
         mCaptureAutomaticEvents = metaData.getBoolean("com.hevodata.android.CaptureAutomaticEvents", true);
 
         long defaultDataExpiration = 1000 * 60 * 60 * 24 * 5; // 5 days default
@@ -183,9 +179,6 @@ public class HevoConfig {
     }
 
     private void showWarnings() {
-        if (this.mIntegrationToken == null) {
-            HLog.w(LOGTAG, "integration token is not set, events will not be streamed");
-        }
         if (this.mIntegrationEndpoint == null) {
             HLog.w(LOGTAG, "integration endpoint is not set, events will not be streamed");
         }
@@ -216,10 +209,6 @@ public class HevoConfig {
         return mTestMode;
     }
 
-    String getIntegrationToken() {
-        return mIntegrationToken;
-    }
-
     boolean getCaptureAutomaticEvents() {
         return mCaptureAutomaticEvents;
     }
@@ -230,11 +219,6 @@ public class HevoConfig {
     }
 
     private void setIntegrationEndpoint(String eventsEndpoint) {
-        if (!eventsEndpoint.endsWith("/")) {
-            eventsEndpoint += "/";
-        }
-        eventsEndpoint += "v1.0/receiver/";
-
         mIntegrationEndpoint = eventsEndpoint;
     }
 
@@ -285,7 +269,6 @@ public class HevoConfig {
                 "    DisableAppOpenEvent " + getDisableAppOpenEvent() + "\n" +
                 "    EnableDebugLogging " + DEBUG + "\n" +
                 "    TestMode " + getTestMode() + "\n" +
-                "    IntegrationToken " + getIntegrationToken() + "\n" +
                 "    mCaptureAutomaticEvents " + getCaptureAutomaticEvents() + "\n" +
                 "    EventsEndpoint " + getEventsEndpoint() + "\n" +
                 "    MinimumSessionDuration: " + getMinimumSessionDuration() + "\n" +
@@ -301,7 +284,6 @@ public class HevoConfig {
     private final boolean mTestMode;
     private final boolean mDisableAppOpenEvent;
     private final boolean mCaptureAutomaticEvents;
-    private final String mIntegrationToken;
     private String mIntegrationEndpoint;
 
     // Mutable, with synchronized accessor and mutator
